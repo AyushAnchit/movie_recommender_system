@@ -3,6 +3,10 @@ import pickle
 import requests
 import pandas as pd
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from a local .env file (if it exists)
+load_dotenv()
 
 # Secure API Key loading: checks Streamlit Secrets, then environment variables, then falls back to a default key
 try:

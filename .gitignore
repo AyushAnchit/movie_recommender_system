@@ -26,3 +26,7 @@ env/
 # IDE config folders
 .vscode/
 .idea/
+
+# Sensitive keys and secrets
+.env
+.streamlit/secrets.toml

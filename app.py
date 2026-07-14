@@ -2,13 +2,20 @@ import streamlit as st
 import pickle
 import requests
 import pandas as pd
+import os
+
+# Secure API Key loading: checks Streamlit Secrets, then environment variables, then falls back to a default key
+try:
+    TMDB_API_KEY = st.secrets.get("TMDB_API_KEY", os.environ.get("TMDB_API_KEY", "8265bd1679663a7ea12ac168da84d2e8"))
+except Exception:
+    TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "8265bd1679663a7ea12ac168da84d2e8")
 
 movies_dic=pickle.load(open('movies.pkl','rb'))
 movies=pd.DataFrame(movies_dic)
 similarity=pickle.load(open('similarity.pkl','rb'))
 
 def fetch_poster(movie_id):
-    url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
     try:
         response = requests.get(url, timeout=2)
         response.raise_for_status()

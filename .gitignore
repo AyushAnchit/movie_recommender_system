@@ -1,0 +1,28 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store
+
+# Large datasets and serialized models (e.g., similarity matrices)
+# Similarity matrix (184MB) and TMDB CSV datasets are too large for standard GitHub pushes (>100MB limit)
+# *.pkl and *.csv are tracked with Git LFS for Hugging Face Spaces
+# *.pkl
+# *.csv
+# !tmdb_*.csv
+
+# IDE config folders
+.vscode/
+.idea/

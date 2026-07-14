@@ -8,17 +8,19 @@ from dotenv import load_dotenv
 # Load environment variables from a local .env file (if it exists)
 load_dotenv()
 
-# Secure API Key loading: checks Streamlit Secrets, then environment variables, then falls back to a default key
+# Secure API Key loading: check Streamlit Secrets, then environment variables
 try:
-    TMDB_API_KEY = st.secrets.get("TMDB_API_KEY", os.environ.get("TMDB_API_KEY", "8265bd1679663a7ea12ac168da84d2e8"))
+    TMDB_API_KEY = st.secrets.get("TMDB_API_KEY", os.environ.get("TMDB_API_KEY"))
 except Exception:
-    TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "8265bd1679663a7ea12ac168da84d2e8")
+    TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 
 movies_dic=pickle.load(open('movies.pkl','rb'))
 movies=pd.DataFrame(movies_dic)
 similarity=pickle.load(open('similarity.pkl','rb'))
 
 def fetch_poster(movie_id):
+    if not TMDB_API_KEY:
+        return "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=500&auto=format&fit=crop"
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
     try:
         response = requests.get(url, timeout=2)
@@ -46,6 +48,10 @@ def recommend(movie):
     return recommended_movies,recommended_movies_posters
 
 st.title('Movie Recommender System')
+
+if not TMDB_API_KEY:
+    st.warning("⚠️ TMDB API Key not found. Please configure TMDB_API_KEY in your local .env file or Streamlit secrets to display real movie posters.")
+
 option = st.selectbox('select your movie',movies['title'].values)
 
 if st.button("Recommend"):
@@ -67,6 +73,8 @@ if st.button("Recommend"):
     with col5:
         st.text(names[4])
         st.image(posters[4])
+
+
 
 
 
